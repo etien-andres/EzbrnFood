@@ -114,6 +114,7 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         float a;
         Cursor cur=db.query("caja",new String[]{"fondo"},"rowid=1",null,null,null,null);
         a=cur.getFloat(0);
+        //cambio
         return a;
     }
     public void update_minimo_decaja(SQLiteDatabase db,Float cant){
