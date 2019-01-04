@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".showsuministros"
+    android:orientation="vertical">
+    <include layout="@layout/tolbarpersonal"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/sabores" />
+
+        <Button
+            android:id="@+id/new_sumin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/verde_claro2"
+            android:text="Nuevo" />
+
+        <AutoCompleteTextView
+            android:id="@+id/busqueda_sumin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar" />
+
+        <GridView
+            android:id="@+id/grid_sumins"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>

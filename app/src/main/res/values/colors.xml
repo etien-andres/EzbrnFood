@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a4c3f2</color>
+    <color name="colorPrimaryDark">#012f7a</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorgris">#969fad</color>
+    <color name="transparent">#00000000 </color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="mesaocupada">#ff5d00</color>
+    <color name="mesalibre">#2c9e44</color>
+    <color name="mesacobrar">#00cccc</color>
+
+    <color name="rojo" >#ff0000</color>
+    <color name="amarillo">#ffe500</color>
+    <color name="naranja">#ff8300</color>
+    <color name="azul">#00a5ff</color>
+    <color name="morado">#8300ff</color>
+
+    <color name="azul23">#3000a5ff</color>
+
+    <color name="rojotr" >#50ff0000</color>
+    <color name="amarillotr">#50ffe500</color>
+    <color name="naranjatr">#50ff8300</color>
+    <color name="azultr">#6c0088ff</color>
+    <color name="azultr2">#99002fff</color>
+
+    <color name="moradotr">#508300ff</color>
+
+    <color name="verde_claro">#d3f5ef</color>
+    <color name="verde_claro2">#FFD8F5D3</color>
+    <color name="amarillo_claro">#FFF4F5D3</color>
+    <color name="naranja_claro">#FFF5DED3</color>
+
+
+    <color name="verde_mil">#70a076</color>
+
+    <color name="amarillo_olivo">#e0dab5</color>
+
+    <color name="cafe_claro">#8c714d</color>
+
+    <color name="cafe_claro2">#b7966a</color>
+
+    <color name="piel">#edc78e</color>
+
+
+</resources>
