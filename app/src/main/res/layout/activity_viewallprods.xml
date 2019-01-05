@@ -19,7 +19,7 @@
             android:id="@+id/imageView8"
             android:layout_width="match_parent"
             android:layout_height="98dp"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             app:srcCompat="@drawable/fods" />
 
         <android.support.v7.widget.RecyclerView

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import DAL.Entidades.Ventas;
 import DAL.Sqlitehelp;
@@ -85,7 +86,7 @@ public class Cobrar extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                pagar();
             }
         });
         //check_propina();
@@ -94,14 +95,44 @@ public class Cobrar extends AppCompatActivity {
 
     }
 
-    public boolean checkchange(){
+    public void pagar(){
+
+        if (checkchange()>=0){
+            float prop=helper.getprops(Estaticas.db);
+            float pago;
+            float cambio;
+            float propi;
+            pago=checkpago();
+            propi=check_propina();
+            cambio=checkchange();
+            helper.update_fondo_de_caja(Estaticas.db,helper.get_fondo(Estaticas.db)+pago);
+            if (cambio>0){
+                helper.update_fondo_de_caja(Estaticas.db,helper.get_fondo(Estaticas.db)-cambio);
+            }
+            if (propi>0){
+                prop+=propi;
+                helper.updateprops(Estaticas.db,prop);
+            }
+            Estaticas.nombremesaact.setStatus(1);
+            helper.updatemesa(Estaticas.db,Estaticas.nombremesaact);
+            helper.delete_venta_temp(Estaticas.db,Estaticas.nombremesaact.getNombre());
+            fragmentoventas.updategridmesa();
+            finish();
+        }
+        else {
+            Toast tst=Toast.makeText(getApplicationContext(),"Pago incorrecto.",Toast.LENGTH_SHORT);
+            tst.show();
+        }
+    }
+
+    public float checkchange(){
         Float a=checkpago()-check_propina()-tot;
         cambio.setText(Float.toString(a));
         if (a<0){
-            return false;
+            return -1;
         }
         else {
-            return true;
+            return a;
         }
     }
     public float checkpago(){

@@ -18,8 +18,8 @@
             android:id="@+id/imageView7"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/sabores" />
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/suministros" />
 
         <Button
             android:id="@+id/new_sumin"

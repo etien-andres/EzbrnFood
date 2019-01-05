@@ -20,8 +20,8 @@
             android:id="@+id/imageView6"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/sabores" />
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/suministros" />
 
         <EditText
             android:id="@+id/nombr_prod"

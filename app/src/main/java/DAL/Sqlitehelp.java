@@ -40,12 +40,12 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         ContentValues nuevoUsuario=new ContentValues();
         nuevoUsuario.put("nombre","admin");
         nuevoUsuario.put("pwd","1234");
-        nuevoUsuario.put("nombrecomp","Administrador Del Sistema");
+        nuevoUsuario.put("nombrecomp","Administrador Del sistema");
         nuevoUsuario.put("contacto","23057000");
         nuevoUsuario.put("rol","Administrador");
         nuevoUsuario.put("tipo",1);
         ContentValues fondo_decaja=new ContentValues();
-        fondo_decaja.put("fondo",0.00);
+        fondo_decaja.put("fondo",2000.00);
         fondo_decaja.put("descripcion","fondo");
         ContentValues minimo_decaja=new ContentValues();
         minimo_decaja.put("fondo",2000);
@@ -54,6 +54,10 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         ContentValues maximo_de_caja=new ContentValues();
         maximo_de_caja.put("fondo",10000);
         maximo_de_caja.put("descripcion" ,"maximo");
+        ContentValues propinas=new ContentValues();
+        propinas.put("fondo",0);
+        propinas.put("descripcion","propina");
+
 
         db.execSQL("create table if not exists restriccion(nombre text primary key unique)");
 
@@ -95,32 +99,62 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         db.execSQL("create table if not exists caja(descripcion text,fondo real)");
         try {
             db.insertOrThrow("usuarios",null,nuevoUsuario);
-            db.insertOrThrow("caja",null,fondo_decaja);
-            db.insertOrThrow("caja",null,minimo_decaja);
-            db.insertOrThrow("caja",null,maximo_de_caja);
+
         }catch (Exception e){
 
         }
+        db.insert("caja",null,fondo_decaja);
+        db.insert("caja",null,minimo_decaja);
+        db.insert("caja",null,maximo_de_caja);
+        db.insert("caja",null,propinas);
+
+
 
     }
+
+
+    public float getprops(SQLiteDatabase db){
+        float a=0;
+        Cursor cur=db.query("caja",new String[]{"fondo"},"descripcion=?",new String[]{"propina"},null,null,null);
+        if (cur.moveToFirst()){
+            a=cur.getFloat(0);
+
+        }
+        cur.close();
+        return a;
+    }
+    public void updateprops(SQLiteDatabase db,float a){
+        ContentValues prop=new ContentValues();
+        prop.put("fondo",a);
+        db.update("caja",prop,"descripcion=?",new String[]{"propina"});
+
+
+    }
+
     public float get_minimo_de_caja(SQLiteDatabase db){
-        float a;
-        Cursor cur=db.query("caja",new String[]{"fondo"},"rowid=1",null,null,null,null);
-        a=cur.getFloat(0);
-        //asdasd
+        float a=0;
+        Cursor cur=db.query("caja",new String[]{"fondo"},"descripcion=?",new String[]{"minimo"},null,null,null);
+        if (cur.moveToFirst()){
+            a=cur.getFloat(0);
+
+        }
+        cur.close();
         return a;
     }
     public float get_maximo_de_caja(SQLiteDatabase db){
-        float a;
-        Cursor cur=db.query("caja",new String[]{"fondo"},"rowid=1",null,null,null,null);
-        a=cur.getFloat(0);
-        //cambio
+        float a=0;
+        Cursor cur=db.query("caja",new String[]{"fondo"},"descripcion=?",new String[]{"maximo"},null,null,null);
+        if (cur.moveToFirst()) {
+
+            a = cur.getFloat(0);
+        }
+        cur.close();
         return a;
     }
     public void update_minimo_decaja(SQLiteDatabase db,Float cant){
         ContentValues minim=new ContentValues();
         minim.put("fondo",cant);
-        db.update("caja",minim,"rowid=2",null);
+        db.update("caja",minim,"descripcion=?",new String[]{"minimo"});
     }
     public void update_maximo_de_caja(SQLiteDatabase db, Float max){
         ContentValues maxis=new ContentValues();
@@ -133,13 +167,20 @@ public class Sqlitehelp extends SQLiteOpenHelper {
     public void update_fondo_de_caja(SQLiteDatabase db,Double fndo){
         ContentValues contentValues=new ContentValues();
         contentValues.put("fondo",fndo);
-        db.update("caja",contentValues,"decripcion=?",new String[]{"fondo"});
+        db.update("caja",contentValues,"descripcion=?",new String[]{"fondo"});
 
     }
     public double get_fondo(SQLiteDatabase db){
         Cursor cur=db.query("caja",new String[]{"fondo"},"descripcion=?",new String[]{"fondo"},null,null,null);
-        double a=cur.getDouble(0);
-        return a;
+        double b=0;
+        if (cur.moveToFirst()){
+            double a=cur.getDouble(0);
+            b=a;
+            //System.out.println(a);
+
+        }
+       cur.close();
+        return b;
     }
     public void insert_venta_temp(SQLiteDatabase db,Long venta, String mesa){
         ContentValues ventatemp=new ContentValues();

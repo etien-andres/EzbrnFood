@@ -20,8 +20,8 @@
             android:id="@+id/imageView11"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/modis" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/modificadores" />
 
         <Button
             android:id="@+id/add_mod"

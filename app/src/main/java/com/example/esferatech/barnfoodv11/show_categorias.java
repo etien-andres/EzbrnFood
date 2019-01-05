@@ -63,6 +63,7 @@ public class show_categorias extends AppCompatActivity {
                         clear();
                         show_cates.setcates();
                     }
+                    finish();
                 }
             }
         });

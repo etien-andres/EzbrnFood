@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,8 +41,16 @@ public class cuenta extends Activity {
         cobrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),Cobrar.class);
-                startActivity(intent);
+                if (Estaticas.nombremesaact.getStatus()!=1){
+                    finish();
+                    Intent intent=new Intent(getApplicationContext(),Cobrar.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast toast=Toast.makeText(getApplicationContext(),"No hay ningún producto procesado en esta cuenta.",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
             }
         });
         print_ticket.setOnClickListener(new View.OnClickListener() {

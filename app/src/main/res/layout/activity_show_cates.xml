@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_weight="1"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/bufet" />
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/categorias" />
 
         <Button
             android:id="@+id/add_cate"
