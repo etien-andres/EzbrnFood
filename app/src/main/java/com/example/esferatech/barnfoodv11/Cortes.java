@@ -65,7 +65,8 @@ public class Cortes extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater layoutInflater=(LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view=layoutInflater.inflate(R.layout.elemento_lista_ventas,null);
-            TextView fecha,id,total,user,mesa;
+            TextView fecha,id,total,user,mesa, grantotal;
+            grantotal=findViewById(R.id.gran_total);
             fecha=view.findViewById(R.id.date_venta);
             id=view.findViewById(R.id.id_venta);
             total=view.findViewById(R.id.total_vent);
@@ -74,11 +75,21 @@ public class Cortes extends AppCompatActivity {
 
             fecha.setText(ventas.get(position).getFecha());
             id.setText(Long.toString(ventas.get(position).getId()));
-            total.setText(Float.toString(ventas.get(position).getTotal()));
+            total.setText("$"+Float.toString(ventas.get(position).getTotal()));
             user.setText(ventas.get(position).getUsr());
             mesa.setText(ventas.get(position).getMesa());
-
+            grantotal.setText(calcuar_gran_tota().toString());
             return view;
         }
+    }
+
+    public Double calcuar_gran_tota(){
+        Double a=0D;
+        ArrayList<Ventas> ventas=helper.getVentas(Estaticas.db);
+        for (Ventas v:ventas) {
+            a+=v.getTotal();
+        }
+        return a;
+
     }
 }

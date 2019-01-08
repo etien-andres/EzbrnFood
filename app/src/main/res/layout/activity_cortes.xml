@@ -7,19 +7,41 @@
     android:orientation="vertical"
     tools:context=".Cortes">
     <include layout="@layout/tolbarpersonal"></include>
-    <LinearLayout
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <GridView
             android:id="@+id/grid_ventas"
             android:layout_width="344dp"
-            android:layout_height="551dp"
+            android:layout_height="420dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp"
+            android:text="Ventas totales:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/grid_ventas" />
+
+        <TextView
+            android:id="@+id/gran_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="100.00"
+            app:layout_constraintStart_toEndOf="@+id/textView29"
+            app:layout_constraintTop_toBottomOf="@+id/grid_ventas" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </LinearLayout>
