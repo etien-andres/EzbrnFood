@@ -45,6 +45,10 @@ public class supervision extends Fragment {
                         Intent intent=new Intent(getContext(),fondo_caja.class);
                         startActivity(intent);
                         break;
+                    case 1:
+                        Intent intent2=new Intent(getContext(),Cortes.class);
+                        startActivity(intent2);
+                        break;
                 }
             }
         });
@@ -87,6 +91,10 @@ public class supervision extends Fragment {
                     cardView.setCardBackgroundColor(getResources().getColor(R.color.naranja_claro));
                     img.setImageResource(R.drawable.cashier);
                     break;
+                case 1:
+                    texto.setText("Movimientos");
+                    cardView.setCardBackgroundColor(getResources().getColor(R.color.cafe_claro2));
+                    img.setImageResource(R.drawable.lis);
 
             }
 

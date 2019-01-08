@@ -41,7 +41,8 @@
         <activity android:name=".show_categorias" />
         <activity android:name=".Modificador_nuevo" />
         <activity android:name=".Cobrar" />
-        <activity android:name=".fondo_caja"></activity>
+        <activity android:name=".fondo_caja" />
+        <activity android:name=".Cortes"></activity>
     </application>
 
 </manifest>

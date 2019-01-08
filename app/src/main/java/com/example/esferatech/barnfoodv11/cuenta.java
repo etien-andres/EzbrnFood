@@ -137,10 +137,6 @@ public class cuenta extends Activity {
             viewHolder.desc.setText(cuentaxd.get(i).getNombre());
             viewHolder.prec.setText(Float.toString(cuentaxd.get(i).getPrecio()));
 
-
-
-
-
         }
 
         @Override
