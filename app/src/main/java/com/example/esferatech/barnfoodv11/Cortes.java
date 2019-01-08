@@ -26,6 +26,7 @@ public class Cortes extends AppCompatActivity {
         setContentView(R.layout.activity_cortes);
         listaventas=findViewById(R.id.grid_ventas);
         helper=new Sqlitehelp(getApplicationContext(),"base",null,1);
+        back=findViewById(R.id.botonback);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
