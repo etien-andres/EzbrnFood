@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -123,9 +124,11 @@ public class venta_1 extends AppCompatActivity {
                     Long idvent=-1L;
                     Estaticas.nombremesaact.setStatus(2);
                     Date date=new Date();
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    String fech=format.format(date);
                     helper.updatemesa(Estaticas.db,Estaticas.nombremesaact);
 
-                    idvent=helper.inserventa(Estaticas.db,gettotal(cuenta),date.toString(),Estaticas.nombremesaact.getNombre(),"admin");
+                    idvent=helper.inserventa(Estaticas.db,gettotal(cuenta),fech,Estaticas.nombremesaact.getNombre(),"admin");
                     helper.insert_venta_temp(Estaticas.db,idvent,Estaticas.nombremesaact.getNombre());
 
 

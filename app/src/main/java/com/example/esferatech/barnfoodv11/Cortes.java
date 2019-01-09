@@ -11,7 +11,10 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import DAL.Entidades.Ventas;
 import DAL.Sqlitehelp;
