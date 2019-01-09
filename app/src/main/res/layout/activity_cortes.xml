@@ -17,7 +17,7 @@
             android:layout_width="344dp"
             android:layout_height="420dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="92dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +40,29 @@
             android:text="100.00"
             app:layout_constraintStart_toEndOf="@+id/textView29"
             app:layout_constraintTop_toBottomOf="@+id/grid_ventas" />
+
+        <TextView
+            android:id="@+id/date_actual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="25dp"
+            android:text="DAte"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/change_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="31dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/botoncategorias"
+            android:elevation="4dp"
+            android:text="Fecha"
+            android:textColor="@android:color/background_light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

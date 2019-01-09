@@ -92,7 +92,7 @@ public class supervision extends Fragment {
                     img.setImageResource(R.drawable.cashier);
                     break;
                 case 1:
-                    texto.setText("Movimientos");
+                    texto.setText("Cortes");
                     cardView.setCardBackgroundColor(getResources().getColor(R.color.cafe_claro2));
                     img.setImageResource(R.drawable.lis);
 

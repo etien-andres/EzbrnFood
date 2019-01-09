@@ -123,6 +123,7 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         cur.close();
         return a;
     }
+
     public void updateprops(SQLiteDatabase db,float a){
         ContentValues prop=new ContentValues();
         prop.put("fondo",a);
@@ -141,6 +142,7 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         cur.close();
         return a;
     }
+
     public float get_maximo_de_caja(SQLiteDatabase db){
         float a=0;
         Cursor cur=db.query("caja",new String[]{"fondo"},"descripcion=?",new String[]{"maximo"},null,null,null);
@@ -151,11 +153,13 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         cur.close();
         return a;
     }
+
     public void update_minimo_decaja(SQLiteDatabase db,Float cant){
         ContentValues minim=new ContentValues();
         minim.put("fondo",cant);
         db.update("caja",minim,"descripcion=?",new String[]{"minimo"});
     }
+
     public void update_maximo_de_caja(SQLiteDatabase db, Float max){
         ContentValues maxis=new ContentValues();
         maxis.put("fondo",max);
@@ -913,7 +917,7 @@ public class Sqlitehelp extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+            //db.execSQL("drop table if exists productos");
     }
 
 
