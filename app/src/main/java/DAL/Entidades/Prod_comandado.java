@@ -42,4 +42,8 @@ public class Prod_comandado {
     public void addmod_opc(Modif_comandado mod){
         mod_opcio.add(mod);
     }
+
+    public void clearmodoblig(){
+        mod_oblig.clear();
+    }
 }

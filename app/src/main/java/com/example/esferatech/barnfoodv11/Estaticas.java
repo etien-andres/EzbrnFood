@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import DAL.Entidades.Categorias;
 import DAL.Entidades.Cuentas;
 import DAL.Entidades.Mesas;
+import DAL.Entidades.Modificadores;
+import DAL.Entidades.Prod_comandado;
 import DAL.Entidades.Product;
 import DAL.Entidades.Ubicacion;
 import DAL.Entidades.Usuarios;
@@ -47,5 +49,6 @@ public class Estaticas {
 
     public static Product producto_comandado;
     public static int id_deprod_comand;
-
+    public static Prod_comandado prod_comandado;
+    public static Modificadores modprod_comanded;
 }

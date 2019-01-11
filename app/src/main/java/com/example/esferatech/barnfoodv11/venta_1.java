@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,10 +44,11 @@ public class venta_1 extends AppCompatActivity {
     ArrayList<Categorias> categorias;
     ImageView ubic;
     TextView titul;
-
+    int id_prod_comand;
     boolean[] cateselec;
     ArrayList<Product> lis;
     ArrayList<Product> listatotal=new ArrayList<>();
+    ArrayList<Prod_comandado> prodscomands=new ArrayList<>();
     RecyclerView recyclerView;
     TextView subtotal;
     Button procesar;
@@ -63,7 +66,7 @@ public class venta_1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venta_1);
         boolean ventaocup=false;
-
+        id_prod_comand=0;
         listaventasactual=new ArrayList<>();
         ubic=findViewById(R.id.ubicaimg);
         titul=findViewById(R.id.titulo_ubi2);
@@ -103,7 +106,7 @@ public class venta_1 extends AppCompatActivity {
 
 
 
-        Adapprod1 adapprod=new Adapprod1(lis);
+        Adapprod1 adapprod=new Adapprod1(lis,this);
         gridviewprod.setAdapter(adapprod);
 
         recyclerView=findViewById(R.id.reciclercate);
@@ -231,11 +234,11 @@ public class venta_1 extends AppCompatActivity {
     public class Adapprod1 extends BaseAdapter{
 
         ArrayList<Product> lista;
+        Activity a;
 
-
-        public Adapprod1( ArrayList < Product> prods){
+        public Adapprod1( ArrayList < Product> prods ,Activity a){
         lista=prods;
-
+        this.a=a;
         }
         @Override
         public int getCount() {
@@ -267,10 +270,11 @@ public class venta_1 extends AppCompatActivity {
             botagre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    cuenta.add(lista.get(position));
-
-                    setrealtotal();
-
+                    Estaticas.producto_comandado=lista.get(position);
+                    Estaticas.prod_comandado=new Prod_comandado();
+                    Estaticas.id_deprod_comand=id_prod_comand;
+                    CustomDialogClass customDialog=new CustomDialogClass(a);
+                    customDialog.show();
 
                 }
             });
@@ -366,7 +370,7 @@ public class venta_1 extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     lis=helper.getprod(Estaticas.db,categorias.get(i).getNombre());
-                    Adapprod1 adapprod2=new Adapprod1(lis);
+                    Adapprod1 adapprod2=new Adapprod1(lis,getParent());
                     gridviewprod.setAdapter(adapprod2);
                     llenarboleano();
                     setselected(i);
@@ -412,7 +416,9 @@ public class venta_1 extends AppCompatActivity {
         public Activity c;
         public Dialog d;
         RecyclerView cates_de_drial;
-
+        FrameLayout cuadro_de_Fragmentos;
+        Fragment fr;
+        cates_de_venta adaptar=new cates_de_venta();
 
         public CustomDialogClass(Activity a) {
             super(a);
@@ -424,28 +430,36 @@ public class venta_1 extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_dialog_ventaprod);
-
-
+            LinearLayoutManager layoutManager =new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+            cates_de_drial=findViewById(R.id.top_menu_venta);
+            cates_de_drial.setLayoutManager(layoutManager);
+            cuadro_de_Fragmentos=findViewById(R.id.contenedor_dialogo);
+            cates_de_drial.setAdapter(adaptar);
+            fr=new modif_oblig();
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_dialogo,fr);
 
 
         }
 
         @Override
         public void onClick(View v) {
-//            switch (v.getId()) {
-//                case :
-//
-//
-//                    dismiss();
-//                    //System.out.println(datel);
-//                    break;
-//                case R.id.:
-//                    dismiss();
-//                    break;
-//                default:
-//                    break;
-//            }
-//            dismiss();
+            switch (v.getId()) {
+                case R.id.cancelar_vnt:
+                    dismiss();
+                    //System.out.println(datel);
+                    break;
+                case R.id.terminar_vnt:
+                    cuenta.add(Estaticas.producto_comandado);
+                    prodscomands.add(Estaticas.prod_comandado);
+                    setrealtotal();
+                    id_prod_comand++;
+                    dismiss();
+
+                    break;
+                default:
+                    break;
+            }
+            dismiss();
         }
 
 
@@ -466,7 +480,7 @@ public class venta_1 extends AppCompatActivity {
             }
 
             public cates_de_venta() {
-                fillbol();
+                slect(0);
             }
 
             @NonNull
@@ -479,7 +493,7 @@ public class venta_1 extends AppCompatActivity {
                 return new viewHolder(view);            }
 
             @Override
-            public void onBindViewHolder(@NonNull viewHolder viewHolder, int i) {
+            public void onBindViewHolder(@NonNull viewHolder viewHolder, final int i) {
                 switch (i){
                     case 0:
                         viewHolder.botoncate.setText("Ingredientes");
@@ -499,6 +513,9 @@ public class venta_1 extends AppCompatActivity {
                 viewHolder.botoncate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        fillbol();
+                        slected[i]=true;
+                        adaptar.notifyDataSetChanged();
 
                     }
                 });

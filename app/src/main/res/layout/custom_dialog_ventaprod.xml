@@ -10,19 +10,20 @@
         android:id="@+id/top_menu_venta"
         android:layout_width="344dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cancel_venta"
+        android:id="@+id/terminar_vnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/botonprocesa"
         android:text="Terminar"
         android:textColor="@android:color/background_light"
@@ -30,11 +31,11 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/aplicar_venta"
+        android:id="@+id/cancelar_vnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:layout_marginStart="50dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/botonprocesa"
         android:backgroundTint="@android:color/holo_red_light"
         android:text="Cancelar"
@@ -45,13 +46,14 @@
     <FrameLayout
         android:id="@+id/contenedor_dialogo"
         android:layout_width="344dp"
-        android:layout_height="428dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="363dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/top_menu_venta">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>
