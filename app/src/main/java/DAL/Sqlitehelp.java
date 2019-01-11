@@ -15,6 +15,7 @@ import java.util.List;
 import DAL.Entidades.Categorias;
 import DAL.Entidades.Existencia;
 import DAL.Entidades.Mesas;
+import DAL.Entidades.Mod_and_tipo;
 import DAL.Entidades.Modificadores;
 import DAL.Entidades.Product;
 import DAL.Entidades.Sumin_Prod;
@@ -76,11 +77,11 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         db.execSQL("create table if not exists ventas(ventaid integer primary key,total real, fecha text, mesa text, user text, foreign key (mesa) references mesas(nombre), foreign key (user) references usuarios(nombre))");
         db.execSQL("create table if not exists existencias (cantuc real, cantuv real, sumi text, foreign key (sumi) references suministros(nombre))");
 
-        db.execSQL("create table if not exists modhasmod(nomb1 text, nomb2 text, foreign key (nomb1) references modificadores(nombre), foreign key (nomb2) references modificadores(nombre))");
+        db.execSQL("create table if not exists modhasmod(nomb1 text, nomb2 text, tipo integer, foreign key (nomb1) references modificadores(nombre), foreign key (nomb2) references modificadores(nombre))");
 
         db.execSQL("create table if not exists prodhassum(cantuv real, produ text, sumin text, foreign key (produ) references productos(nombre), foreign key (sumin) references suministros(nombre))");
 
-        db.execSQL("create table if not exists prodhasmod(prod text, mod text, foreign key (prod) references productos(nombre), foreign key (mod) references modificadores(nombre))");
+        db.execSQL("create table if not exists prodhasmod(prod text, mod text,tipo integer, foreign key (prod) references productos(nombre), foreign key (mod) references modificadores(nombre))");
 
         db.execSQL("create table if not exists prodhascat(prod text, cate text , foreign key (prod) references productos(nombre), foreign key (cate) references categorias(nombre))");
         db.execSQL("create table if not exists restrichasprod(rest text, prod text, foreign key (rest) references restriccion(nombre), foreign key (prod) references productos(nombre))");
@@ -414,28 +415,33 @@ public class Sqlitehelp extends SQLiteOpenHelper {
 
 
 
-    public void insert_mod_a_mod(SQLiteDatabase db,String mod1,String mod2){
+    public void insert_mod_a_mod(SQLiteDatabase db,String mod1,String mod2, int tipo){
         ContentValues cont=new ContentValues();
         cont.put("nomb1",mod1);
         cont.put("nom2",mod2);
+        cont.put("tipo",tipo);
         db.insert("modhasmod",null,cont);
     }
     public void delet_mod_de_mod(SQLiteDatabase db, String mod1, String mod2){
         db.execSQL("delete from modhasmod where nomb1='"+mod1+"' and nomb2= '"+mod2+"'");
     }
-    public ArrayList<Modificadores> getmod_de_mod(SQLiteDatabase db,String mod){
-        ArrayList<Modificadores> modificadores=new ArrayList<>();
+    public ArrayList<Mod_and_tipo> getmod_de_mod(SQLiteDatabase db, String mod){
+        ArrayList<Mod_and_tipo> modificadores=new ArrayList<>();
         ArrayList<String> nom_mod=new ArrayList<>();
-        Cursor cursor=db.query("modhasmod",new String[]{"nomb2"},"nomb1=?",new String[]{mod},null,null,null);
+        ArrayList<Integer> tipos=new ArrayList<>();
+        Cursor cursor=db.query("modhasmod",new String[]{"nomb2","tipo"},"nomb1=?",new String[]{mod},null,null,null);
         if (cursor.moveToFirst()){
             do {
                 nom_mod.add(cursor.getString(0));
+                tipos.add(cursor.getInt(1));
             }while (cursor.moveToNext());
         }
+        int i=0;
         for (String a:nom_mod) {
             cursor=db.query("modificadores",new String[]{"nombre","precio"},"nombre=?",new String[]{a},null,null,null);
             Modificadores modi=new Modificadores(cursor.getString(0),cursor.getFloat(1));
-            modificadores.add(modi);
+            modificadores.add(new Mod_and_tipo(modi,tipos.get(i)));
+            i++;
         }
         return modificadores;
     }
@@ -478,32 +484,37 @@ public class Sqlitehelp extends SQLiteOpenHelper {
         return suministros;
     }
 
-    public void insert_mod_deprod(SQLiteDatabase db, String mod, String prod){
+    public void insert_mod_deprod(SQLiteDatabase db, String mod, String prod,Integer tipo){
         ContentValues cont=new ContentValues();
         cont.put("prod",prod);
         cont.put("mod",mod);
+        cont.put("tipo",tipo);
         db.insert("prodhasmod",null,cont);
     }
     public void delete_mod_deprod(SQLiteDatabase db, String mod, String prod){
         db.execSQL("delete from prodhasmod where prod='"+prod+"' and mod='"+mod+"'");
     }
-    public ArrayList<Modificadores> get_mod_de_prod(SQLiteDatabase db,String prod){
-        ArrayList<Modificadores> modificadores=new ArrayList<>();
+    public ArrayList<Mod_and_tipo> get_mod_de_prod(SQLiteDatabase db,String prod){
+        ArrayList<Mod_and_tipo> modificadores=new ArrayList<>();
         ArrayList<String> nom_mod=new ArrayList<>();
-        Cursor cur=db.query("prodhasmod",new String[]{"mod"},"prod=?",new String[]{prod},null,null,null);
+        ArrayList<Integer> tipos=new ArrayList<>();
+        Cursor cur=db.query("prodhasmod",new String[]{"mod","tipo"},"prod=?",new String[]{prod},null,null,null);
         if (cur.moveToFirst()){
             do {
                 nom_mod.add(cur.getString(0));
+                tipos.add(cur.getInt(1));
             }while (cur.moveToNext());
         }
 
         for (String a:nom_mod) {
             cur=db.query("modificadores",new String[]{"rowid","nombre","precio"},"nombre=?",new String[]{a},null,null,null,null);
             if (cur.moveToFirst()){
+                int i=0;
                 do {
                     Modificadores modificadores1=new Modificadores(cur.getString(1),cur.getFloat(2));
                     modificadores1.setId(cur.getLong(0));
-                    modificadores.add(modificadores1);
+                    modificadores.add(new Mod_and_tipo(modificadores1,tipos.get(i)));
+                    i++;
                 }while (cur.moveToNext());
             }
         }

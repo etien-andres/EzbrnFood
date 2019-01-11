@@ -45,4 +45,7 @@ public class Estaticas {
         title_bar.setText(str);
     }
 
+    public static Product producto_comandado;
+    public static int id_deprod_comand;
+
 }

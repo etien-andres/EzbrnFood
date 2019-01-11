@@ -1,5 +1,7 @@
 package com.example.esferatech.barnfoodv11;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,8 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import DAL.Entidades.Categorias;
+import DAL.Entidades.Prod_comandado;
 import DAL.Entidades.Product;
 import DAL.Entidades.Venta_mesa;
 import DAL.Entidades.Ventas;
@@ -49,6 +54,8 @@ public class venta_1 extends AppCompatActivity {
     ImageView verticket;
     ArrayList<Venta_mesa> listaventasactual;
     final Sqlitehelp helper=new Sqlitehelp(this,"base",null,1);
+
+    public static ArrayList<Prod_comandado> prod_comandados=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,9 +267,8 @@ public class venta_1 extends AppCompatActivity {
             botagre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                cuenta.add(lista.get(position));
-                    Toast toa=Toast.makeText(getApplicationContext(),Integer.toString(cuenta.size()),Toast.LENGTH_SHORT);
-                    toa.show();
+                    cuenta.add(lista.get(position));
+
                     setrealtotal();
 
 
@@ -289,6 +295,10 @@ public class venta_1 extends AppCompatActivity {
         else {
             return gettotal(cuenta);
         }
+    }
+    public void agregar_prod(){
+
+
     }
 
 
@@ -397,6 +407,124 @@ public class venta_1 extends AppCompatActivity {
     }
 
 
+    public class CustomDialogClass extends Dialog implements
+            android.view.View.OnClickListener {
+        public Activity c;
+        public Dialog d;
+        RecyclerView cates_de_drial;
 
+
+        public CustomDialogClass(Activity a) {
+            super(a);
+            this.c = a;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.custom_dialog_ventaprod);
+
+
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+//            switch (v.getId()) {
+//                case :
+//
+//
+//                    dismiss();
+//                    //System.out.println(datel);
+//                    break;
+//                case R.id.:
+//                    dismiss();
+//                    break;
+//                default:
+//                    break;
+//            }
+//            dismiss();
+        }
+
+
+
+
+        public class cates_de_venta extends RecyclerView.Adapter<CustomDialogClass.cates_de_venta.viewHolder>{
+
+            boolean slected[]=new boolean[3];
+            public void fillbol(){
+                for (int i = 0; i <3 ; i++) {
+                    slected[i]=false;
+                }
+
+            }
+            public void slect(int i){
+                fillbol();
+                slected[i]=true;
+            }
+
+            public cates_de_venta() {
+                fillbol();
+            }
+
+            @NonNull
+            @Override
+            public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+                View view=LayoutInflater.from(getApplicationContext()).inflate(R.layout.botoncategoria,parent, false);
+
+                // Button but=view.findViewById(R.id.botoncate);
+
+                return new viewHolder(view);            }
+
+            @Override
+            public void onBindViewHolder(@NonNull viewHolder viewHolder, int i) {
+                switch (i){
+                    case 0:
+                        viewHolder.botoncate.setText("Ingredientes");
+                        break;
+                    case 1:
+                        viewHolder.botoncate.setText("Extras");
+                        break;
+                    case 2:
+                        viewHolder.botoncate.setText("Comentarios");
+                        break;
+                }
+
+                if (slected[i]) {
+                    viewHolder.border.setBackgroundColor(getResources().getColor(R.color.transparent));
+                }
+                else viewHolder.border.setBackgroundColor(getResources().getColor(R.color.colorgris));
+                viewHolder.botoncate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return 3;
+            }
+
+            public class viewHolder extends RecyclerView.ViewHolder{
+                Button botoncate;
+                LinearLayout border;
+
+                public viewHolder(@NonNull View itemView) {
+                    super(itemView);
+                    botoncate=itemView.findViewById(R.id.botoncate);
+                    border=itemView.findViewById(R.id.botoncateborder);
+
+
+                }
+
+
+            }
+        }
+    }
 
 }
