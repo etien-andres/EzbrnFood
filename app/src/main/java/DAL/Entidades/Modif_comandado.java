@@ -5,9 +5,10 @@ import java.util.ArrayList;
 public class Modif_comandado {
     Modificadores mod;
     ArrayList<Modif_comandado> mod_de_mod;
-
-    public Modif_comandado() {
+    int parent_prod;
+    public Modif_comandado(int parent) {
         mod_de_mod=new ArrayList<>();
+        parent_prod=parent;
     }
 
     public Modificadores getMod() {
@@ -29,4 +30,11 @@ public class Modif_comandado {
         mod_de_mod.add(mod);
     }
 
+    public int getParent_prod() {
+        return parent_prod;
+    }
+
+    public void setParent_prod(int parent_prod) {
+        this.parent_prod = parent_prod;
+    }
 }

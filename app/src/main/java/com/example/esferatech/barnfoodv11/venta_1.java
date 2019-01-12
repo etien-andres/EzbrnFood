@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import DAL.Entidades.Categorias;
+import DAL.Entidades.Modif_comandado;
+import DAL.Entidades.Modificadores;
 import DAL.Entidades.Prod_comandado;
 import DAL.Entidades.Product;
 import DAL.Entidades.Venta_mesa;
@@ -44,7 +46,6 @@ public class venta_1 extends AppCompatActivity {
     ArrayList<Categorias> categorias;
     ImageView ubic;
     TextView titul;
-    int id_prod_comand;
     boolean[] cateselec;
     ArrayList<Product> lis;
     ArrayList<Product> listatotal=new ArrayList<>();
@@ -57,8 +58,7 @@ public class venta_1 extends AppCompatActivity {
     ImageView verticket;
     ArrayList<Venta_mesa> listaventasactual;
     final Sqlitehelp helper=new Sqlitehelp(this,"base",null,1);
-
-    public static ArrayList<Prod_comandado> prod_comandados=new ArrayList<>();
+    int ide_deprod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class venta_1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venta_1);
         boolean ventaocup=false;
-        id_prod_comand=0;
         listaventasactual=new ArrayList<>();
         ubic=findViewById(R.id.ubicaimg);
         titul=findViewById(R.id.titulo_ubi2);
@@ -143,9 +142,18 @@ public class venta_1 extends AppCompatActivity {
 
 
                     for (int i = 0; i <cuenta.size() ; i++) {
+
                         helper.insert_prod_de_vent(Estaticas.db,i,idvent,cuenta.get(i).getNombre());
 
                     }
+                    int idmod=1;
+                    for (Prod_comandado prod:prodscomands) {
+                        for (Modif_comandado mod:prod.getMod_oblig()) {
+                            helper.insert_mod_de_prod_enventa(Estaticas.db,mod.getParent_prod(),idmod,idvent,prod.getProduct().getNombre(),mod.getMod().getNombre());
+                            idmod++;
+                        }
+                    }
+
                     fragmentoventas.updategridmesa();
 //                    for (int i = 0; i <cuenta.size() ; i++) {
 //                        Print.PrtTicket(cuenta.get(i).getNombre()+" "+cuenta.get(i).getPrecio());
@@ -223,9 +231,11 @@ public class venta_1 extends AppCompatActivity {
             ds=helper.get_ventas_temp(Estaticas.db,Estaticas.nombremesaact.getNombre());
             listatotal=helper.getprods_de_vent(Estaticas.db,helper.get_ventas_temp(Estaticas.db,Estaticas.nombremesaact.getNombre()));
             setrealtotal();
+            ide_deprod=listatotal.size()+1;
+
         }
         if (Estaticas.nombremesaact.getStatus()==1){
-
+            ide_deprod=1;
         }
 
 
@@ -271,8 +281,8 @@ public class venta_1 extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Estaticas.producto_comandado=lista.get(position);
-                    Estaticas.prod_comandado=new Prod_comandado();
-                    Estaticas.id_deprod_comand=id_prod_comand;
+                    Estaticas.prod_comandado=new Prod_comandado(ide_deprod);
+                    Estaticas.id_deprod_comand=ide_deprod;
                     CustomDialogClass customDialog=new CustomDialogClass(a);
                     customDialog.show();
 
@@ -411,8 +421,7 @@ public class venta_1 extends AppCompatActivity {
     }
 
 
-    public class CustomDialogClass extends Dialog implements
-            android.view.View.OnClickListener {
+    public class CustomDialogClass extends Dialog {
         public Activity c;
         public Dialog d;
         RecyclerView cates_de_drial;
@@ -437,30 +446,29 @@ public class venta_1 extends AppCompatActivity {
             cates_de_drial.setAdapter(adaptar);
             fr=new modif_oblig();
             getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_dialogo,fr);
-
-
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.cancelar_vnt:
+            Button cancel=findViewById(R.id.cancelar_vnt);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     dismiss();
-                    //System.out.println(datel);
-                    break;
-                case R.id.terminar_vnt:
+                }
+            });
+            Button terminar=findViewById(R.id.terminar_vnt);
+            terminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     cuenta.add(Estaticas.producto_comandado);
                     prodscomands.add(Estaticas.prod_comandado);
                     setrealtotal();
-                    id_prod_comand++;
+                    ide_deprod++;
                     dismiss();
+                }
+            });
 
-                    break;
-                default:
-                    break;
-            }
-            dismiss();
+
         }
+
+
 
 
 

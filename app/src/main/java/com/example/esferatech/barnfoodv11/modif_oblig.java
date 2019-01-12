@@ -108,7 +108,7 @@ public class modif_oblig extends Fragment {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         slect(position);
-                        Modif_comandado modif_comandado=new Modif_comandado();
+                        Modif_comandado modif_comandado=new Modif_comandado(Estaticas.id_deprod_comand);
                         modif_comandado.setMod(mod_and_tipos.get(position).getMod());
                         Estaticas.prod_comandado.clearmodoblig();
                          Estaticas.prod_comandado.addmod_oblig(modif_comandado);
@@ -122,7 +122,7 @@ public class modif_oblig extends Fragment {
                 @Override
                 public void onClick(View v) {
                     slect(position);
-                    Modif_comandado modif_comandado=new Modif_comandado();
+                    Modif_comandado modif_comandado=new Modif_comandado(Estaticas.id_deprod_comand);
                     modif_comandado.setMod(mod_and_tipos.get(position).getMod());
                     Estaticas.prod_comandado.clearmodoblig();
                     Estaticas.prod_comandado.addmod_oblig(modif_comandado);

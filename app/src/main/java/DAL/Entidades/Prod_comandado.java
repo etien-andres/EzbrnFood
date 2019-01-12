@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public class Prod_comandado {
     Product product;
+    int id_deventa;
     ArrayList<Modif_comandado> mod_oblig;
     ArrayList<Modif_comandado> mod_opcio;
 
-    public Prod_comandado() {
+    public Prod_comandado(int id_deventa) {
+        this.id_deventa=id_deventa;
         mod_oblig=new ArrayList<>();
         mod_opcio=new ArrayList<>();
     }

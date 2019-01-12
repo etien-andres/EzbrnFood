@@ -300,6 +300,8 @@ public class edit_prods extends AppCompatActivity {
         catenprod.setAdapter(spinCate);
     }
 
+    //public class
+
 
 
 }
