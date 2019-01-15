@@ -1,19 +1,24 @@
 package com.example.esferatech.barnfoodv11;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -24,6 +29,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import DAL.Entidades.Categorias;
+import DAL.Entidades.Mod_and_tipo;
+import DAL.Entidades.Modificadores;
 import DAL.Entidades.Product;
 import DAL.Sqlitehelp;
 
@@ -300,7 +307,73 @@ public class edit_prods extends AppCompatActivity {
         catenprod.setAdapter(spinCate);
     }
 
-    //public class
+    public class Dialogo_agrega_mods extends Dialog{
+        GridView modific_grid;
+        ArrayList<Mod_and_tipo> modificadores;
+        Activity c;
+        public Dialogo_agrega_mods(Activity a, ArrayList<Mod_and_tipo> mods) {
+            super(a);
+            c=a;
+            modificadores=mods;
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            setContentView(R.layout.custom_dialog_agregarmods);
+            Button cancel=findViewById(R.id.cancelar_add);
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+            Button terminar=findViewById(R.id.agregar_mods);
+
+
+        }
+
+
+
+        public class adap_mods extends BaseAdapter{
+
+            public adap_mods(ArrayList<Mod_and_tipo> mods) {
+                this.mods = mods;
+            }
+
+            ArrayList<Mod_and_tipo> mods;
+            @Override
+            public int getCount() {
+                return mods.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                View view=inflater.inflate(R.layout.elemento_modificador_menu_ad,null);
+
+
+
+                return view;
+            }
+        }
+
+
+
+    }
 
 
 
