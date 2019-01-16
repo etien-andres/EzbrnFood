@@ -44,10 +44,13 @@ public class edit_prods extends AppCompatActivity {
     Button agregarProd;
     String[] tipos;
     final Sqlitehelp helper=new Sqlitehelp(this,"base",null,1);
+    Activity activ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activ=this;
         setContentView(R.layout.activity_edit_prods);
         catenprod=findViewById(R.id.spinnercategs);
         addsumin=findViewById(R.id.add_sumin);
@@ -113,6 +116,15 @@ public class edit_prods extends AppCompatActivity {
                 Estaticas.editandoprod=false;
             }
 
+        });
+
+        addmod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Dialogo_agrega_mods dialogo_agrega_mods=new Dialogo_agrega_mods(activ);
+                dialogo_agrega_mods.show();
+            }
         });
 
         agregarProd.setOnClickListener(new View.OnClickListener() {
@@ -310,11 +322,14 @@ public class edit_prods extends AppCompatActivity {
     public class Dialogo_agrega_mods extends Dialog{
         GridView modific_grid;
         ArrayList<Mod_and_tipo> modificadores;
+        ArrayList<Modificadores> modifs;
+        ArrayList<Modificadores> modifs_deprod=new ArrayList<>();
+        adap_mods adapt_mods;
         Activity c;
-        public Dialogo_agrega_mods(Activity a, ArrayList<Mod_and_tipo> mods) {
+        TextView contador_mods;
+        public Dialogo_agrega_mods(Activity a) {
             super(a);
             c=a;
-            modificadores=mods;
         }
 
         @Override
@@ -323,7 +338,9 @@ public class edit_prods extends AppCompatActivity {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
 
             setContentView(R.layout.custom_dialog_agregarmods);
+            contador_mods=findViewById(R.id.no_de_mods);
             Button cancel=findViewById(R.id.cancelar_add);
+              setmod_deprod();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -331,19 +348,43 @@ public class edit_prods extends AppCompatActivity {
                 }
             });
             Button terminar=findViewById(R.id.agregar_mods);
+            modific_grid=findViewById(R.id.mods_grid);
+            modifs=helper.get_modificadores(Estaticas.db);
+            adapt_mods=new adap_mods(modifs);
+           modific_grid.setAdapter(adapt_mods);
+            terminar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+
+        }
 
 
+        public void setmod_deprod(){
+            modificadores=helper.get_mod_de_prod(Estaticas.db,Estaticas.product_Current.getNombre());
+            for (Mod_and_tipo a:modificadores) {
+                modifs_deprod.add(a.getMod());
+            }
+            contador_mods.setText(Integer.toString(modificadores.size()));
         }
 
 
 
         public class adap_mods extends BaseAdapter{
 
-            public adap_mods(ArrayList<Mod_and_tipo> mods) {
+            public adap_mods(ArrayList<Modificadores> mods) {
                 this.mods = mods;
             }
 
-            ArrayList<Mod_and_tipo> mods;
+            ArrayList<Modificadores> mods;
             @Override
             public int getCount() {
                 return mods.size();
@@ -360,11 +401,59 @@ public class edit_prods extends AppCompatActivity {
             }
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+                TextView nombre,precio;
+                final Switch oblig_switch;
+                CheckBox check_mod;
                 View view=inflater.inflate(R.layout.elemento_modificador_menu_ad,null);
+                nombre=view.findViewById(R.id.nombre_mod);
+                precio=view.findViewById(R.id.precio_mod);
+                oblig_switch=view.findViewById(R.id.oblig_switch);
+                check_mod=view.findViewById(R.id.checked_mod);
 
+                nombre.setText(mods.get(position).getNombre());
+                precio.setText(mods.get(position).getPrecio().toString());
+                int x=0;
+                for (Modificadores a:modifs_deprod){
+                    if (a.getNombre().equals(mods.get(position).getNombre())){
+                        check_mod.setChecked(true);
+                        if (modificadores.get(x).getTipo()==1){
+                            oblig_switch.setChecked(false);
+                        }
+                        else {
+                            oblig_switch.setChecked(true);
+
+                        }
+                    }
+                    else check_mod.setChecked(false);
+                    x++;
+                }
+                check_mod.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        int tip;
+                        if (oblig_switch.isChecked()){
+                            tip=2;
+                        }
+                        else tip=1;
+                        if (isChecked){
+                            helper.insert_mod_deprod(Estaticas.db,mods.get(position).getNombre(),Estaticas.product_Current.getNombre(),tip);
+                            setmod_deprod();
+                            adapt_mods.notifyDataSetChanged();
+                            Toast toast=Toast.makeText(getApplicationContext(),"agregado",Toast.LENGTH_SHORT);
+                            toast.show();
+
+                        }
+                        else {
+                            helper.delete_mod_deprod(Estaticas.db,mods.get(position).getNombre(),Estaticas.product_Current.getNombre());
+                            setmod_deprod();
+                            adapt_mods.notifyDataSetChanged();
+                            Toast toast=Toast.makeText(getApplicationContext(),"quitado",Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                });
 
 
                 return view;

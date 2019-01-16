@@ -59,6 +59,7 @@ public class venta_1 extends AppCompatActivity {
     ArrayList<Venta_mesa> listaventasactual;
     final Sqlitehelp helper=new Sqlitehelp(this,"base",null,1);
     int ide_deprod;
+    Activity x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class venta_1 extends AppCompatActivity {
         titul=findViewById(R.id.titulo_ubi2);
         ubic.setImageResource(Integer.parseInt(Estaticas.curubi.getPhoto()));
         titul.setText(Estaticas.curubi.getNombre()+": "+Estaticas.nombremesaact.getNombre());
-
+        x=this;
         subtotal=findViewById(R.id.subtotal);
 
         relativeLayout=findViewById(R.id.barrafondo);
@@ -105,7 +106,7 @@ public class venta_1 extends AppCompatActivity {
 
 
 
-        Adapprod1 adapprod=new Adapprod1(lis,this);
+        Adapprod1 adapprod=new Adapprod1(lis,x);
         gridviewprod.setAdapter(adapprod);
 
         recyclerView=findViewById(R.id.reciclercate);
@@ -445,7 +446,7 @@ public class venta_1 extends AppCompatActivity {
             cuadro_de_Fragmentos=findViewById(R.id.contenedor_dialogo);
             cates_de_drial.setAdapter(adaptar);
             fr=new modif_oblig();
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_dialogo,fr);
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_dialogo,fr).commit();
             Button cancel=findViewById(R.id.cancelar_vnt);
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
