@@ -17,10 +17,12 @@ import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import DAL.Entidades.Categorias;
+import DAL.Entidades.Mod_and_tipo;
 import DAL.Entidades.Modif_comandado;
 import DAL.Entidades.Modificadores;
 import DAL.Entidades.Prod_comandado;
@@ -60,6 +63,7 @@ public class venta_1 extends AppCompatActivity {
     final Sqlitehelp helper=new Sqlitehelp(this,"base",null,1);
     int ide_deprod;
     Activity x;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,8 +288,11 @@ public class venta_1 extends AppCompatActivity {
                     Estaticas.producto_comandado=lista.get(position);
                     Estaticas.prod_comandado=new Prod_comandado(ide_deprod);
                     Estaticas.id_deprod_comand=ide_deprod;
-                    CustomDialogClass customDialog=new CustomDialogClass(a);
-                    customDialog.show();
+
+                    cuenta.add(Estaticas.producto_comandado);
+                    prodscomands.add(Estaticas.prod_comandado);
+                    setrealtotal();
+                    ide_deprod++;
 
                 }
             });
@@ -429,45 +436,142 @@ public class venta_1 extends AppCompatActivity {
         FrameLayout cuadro_de_Fragmentos;
         Fragment fr;
         cates_de_venta adaptar=new cates_de_venta();
+        adapt_mods adapt_mods;
+        boolean slected[];
+        ArrayList<Mod_and_tipo> modificadores;
+        GridView modif_obig_grid;
+
 
         public CustomDialogClass(Activity a) {
             super(a);
             this.c = a;
+//            modificadores=helper.get_mod_de_prod(Estaticas.db,Estaticas.product_Current.getNombre());
+//           slected=new boolean[modificadores.size()];
+//            fillbool();
+
+
         }
 
+        public void slect(int j){
+            fillbool();
+            slected[j]=true;
+        }
+        public void fillbool(){
+            for (int i = 0; i <slected.length ; i++) {
+                slected[i]=false;
+            }
+        }
+        public ArrayList<Mod_and_tipo> filtrarOblig(ArrayList<Mod_and_tipo> mod_and_tipos){
+            ArrayList <Mod_and_tipo> modAndTipos=new ArrayList<>();
+            for (Mod_and_tipo a:mod_and_tipos) {
+                if (a.getTipo()==1){
+                    modAndTipos.add(a);
+                }
+            }
+            return modAndTipos;
+        }
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_dialog_ventaprod);
-            LinearLayoutManager layoutManager =new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
-            cates_de_drial=findViewById(R.id.top_menu_venta);
-            cates_de_drial.setLayoutManager(layoutManager);
-            cuadro_de_Fragmentos=findViewById(R.id.contenedor_dialogo);
-            cates_de_drial.setAdapter(adaptar);
-            fr=new modif_oblig();
-            getSupportFragmentManager().beginTransaction().replace(R.id.contenedor_dialogo,fr).commit();
-            Button cancel=findViewById(R.id.cancelar_vnt);
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismiss();
-                }
-            });
-            Button terminar=findViewById(R.id.terminar_vnt);
-            terminar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cuenta.add(Estaticas.producto_comandado);
-                    prodscomands.add(Estaticas.prod_comandado);
-                    setrealtotal();
-                    ide_deprod++;
-                    dismiss();
-                }
-            });
+//            modif_obig_grid=findViewById(R.id.grid_dialogo_venta);
+//            adapt_mods=new adapt_mods(modificadores);
+//            LinearLayoutManager layoutManager =new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+//            cates_de_drial=findViewById(R.id.top_menu_venta);
+//            cates_de_drial.setLayoutManager(layoutManager);
+//            cates_de_drial.setAdapter(adaptar);
+//            Button cancel=findViewById(R.id.cancelar_vnt);
+//            cancel.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dismiss();
+//                }
+//            });
+//            Button terminar=findViewById(R.id.terminar_vnt);
+//            terminar.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    cuenta.add(Estaticas.producto_comandado);
+//                    prodscomands.add(Estaticas.prod_comandado);
+//                    setrealtotal();
+//                    ide_deprod++;
+//                    dismiss();
+//                }
+//            });
 
 
         }
+
+        public class adapt_mods extends BaseAdapter{
+            ArrayList<Mod_and_tipo> mod_and_tipos;
+
+
+            public adapt_mods(ArrayList<Mod_and_tipo> mod_and_tipos) {
+                this.mod_and_tipos = filtrarOblig(mod_and_tipos);
+            }
+
+            @Override
+            public int getCount() {
+                return mod_and_tipos.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View view=inflater.inflate(R.layout.elemento_modi_oblig,null);
+                TextView nom,precio;
+                RadioButton radioButton;
+
+                nom=view.findViewById(R.id.nombre_mod);
+                precio=view.findViewById(R.id.precio_mod);
+                radioButton=view.findViewById(R.id.slected_mod);
+
+                if (slected[position]){
+                    radioButton.setChecked(true);
+                }
+                else radioButton.setChecked(false);
+                radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        slect(position);
+                        Modif_comandado modif_comandado=new Modif_comandado(Estaticas.id_deprod_comand);
+                        modif_comandado.setMod(mod_and_tipos.get(position).getMod());
+                        Estaticas.prod_comandado.clearmodoblig();
+                        Estaticas.prod_comandado.addmod_oblig(modif_comandado);
+                        adapt_mods.notifyDataSetChanged();
+                    }
+                });
+                nom.setText(mod_and_tipos.get(position).getMod().getNombre());
+                precio.setText(mod_and_tipos.get(position).getMod().getPrecio().toString());
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        slect(position);
+                        Modif_comandado modif_comandado=new Modif_comandado(Estaticas.id_deprod_comand);
+                        modif_comandado.setMod(mod_and_tipos.get(position).getMod());
+                        Estaticas.prod_comandado.clearmodoblig();
+                        Estaticas.prod_comandado.addmod_oblig(modif_comandado);
+                        adapt_mods.notifyDataSetChanged();
+
+                    }
+                });
+
+                return view;
+            }
+        }
+
 
 
 

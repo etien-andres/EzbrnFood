@@ -44,7 +44,7 @@ public class fragmentoventas extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          helper=new Sqlitehelp(getContext(),"base",null,1);
-        MainActivity.changetitle("Venta");
+        //MainActivity.changetitle("Venta");
         //helper.returnubication(E)
 
 

@@ -71,7 +71,6 @@ public class modif_oblig extends Fragment {
 
 
         public adapt_mods(ArrayList<Mod_and_tipo> mod_and_tipos) {
-            this.mod_and_tipos = filtrarOblig(mod_and_tipos);
         }
 
         @Override
@@ -135,13 +134,5 @@ public class modif_oblig extends Fragment {
         }
     }
 
-    public ArrayList<Mod_and_tipo> filtrarOblig(ArrayList<Mod_and_tipo> mod_and_tipos){
-        ArrayList <Mod_and_tipo> modAndTipos=new ArrayList<>();
-        for (Mod_and_tipo a:mod_and_tipos) {
-            if (a.getTipo()==1){
-                modAndTipos.add(a);
-            }
-        }
-        return modAndTipos;
-    }
+
 }
